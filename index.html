@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>Khám phá nhóm môn phù hợp</title>
+  <style>
+    :root {
+      --ink: #1f2a44;
+      --muted: #69758c;
+      --line: #e5eaf2;
+      --paper: #ffffff;
+      --bg: #f5f7fb;
+      --primary: #4169d8;
+      --primary-soft: #edf2ff;
+      --a: #4169d8;
+      --b: #d88b2d;
+      --c: #219879;
+      --d: #9870ce;
+      --shadow: 0 18px 50px rgba(36, 52, 91, .08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 0%, rgba(111, 146, 255, .12), transparent 27rem),
+        radial-gradient(circle at 100% 10%, rgba(175, 139, 228, .11), transparent 25rem),
+        var(--bg);
+      min-height: 100vh;
+    }
+    button { font: inherit; cursor: pointer; }
+    button:focus-visible { outline: 3px solid rgba(65,105,216,.35); outline-offset: 3px; }
+    .shell { width: min(880px, calc(100% - 32px)); margin: 0 auto; padding: 34px 0 48px; }
+    .brand { display:flex; align-items:center; gap:11px; margin-bottom:28px; }
+    .brand-mark {
+      display:grid; place-items:center; width:42px; height:42px; border-radius:14px;
+      color:white; font-size:21px; font-weight:800;
+      background:linear-gradient(145deg,#5e80e7,#8a6bd0);
+      box-shadow:0 8px 18px rgba(75,100,210,.25);
+    }
+    .brand-name { font-weight:800; letter-spacing:-.02em; }
+    .brand-sub { font-size:12px; color:var(--muted); margin-top:2px; }
+    .panel {
+      background:rgba(255,255,255,.94); border:1px solid rgba(229,234,242,.95);
+      border-radius:26px; box-shadow:var(--shadow); overflow:hidden;
+    }
+    .intro { padding:clamp(25px, 5vw, 48px); }
+    .eyebrow {
+      display:inline-flex; align-items:center; gap:7px; padding:7px 11px;
+      border-radius:999px; color:#3d5fc1; background:var(--primary-soft);
+      font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase;
+    }
+    h1 { font-size:clamp(30px, 5vw, 46px); line-height:1.12; letter-spacing:-.045em; margin:18px 0 15px; }
+    .lead { color:var(--muted); font-size:16px; line-height:1.75; max-width:650px; margin:0; }
+    .feature-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:28px 0; }
+    .feature { border:1px solid var(--line); border-radius:17px; padding:15px; background:#fcfdff; }
+    .feature-icon { font-size:21px; margin-bottom:9px; }
+    .feature strong { display:block; font-size:14px; }
+    .feature span { display:block; font-size:12px; line-height:1.5; color:var(--muted); margin-top:4px; }
+    .note { font-size:13px; line-height:1.65; color:var(--muted); background:#f8faff; border-left:3px solid #a6b9f5; padding:12px 14px; border-radius:0 10px 10px 0; }
+    .btn {
+      border:0; border-radius:13px; padding:13px 19px; font-weight:750; transition:transform .15s, background .15s;
+    }
+    .btn:hover { transform:translateY(-1px); }
+    .btn-primary { color:#fff; background:var(--primary); box-shadow:0 8px 18px rgba(65,105,216,.2); }
+    .btn-primary:hover { background:#3459c5; }
+    .btn-secondary { color:#34415b; background:#f1f4f9; border:1px solid var(--line); }
+    .btn-quiet { background:transparent; color:var(--muted); padding-left:10px; padding-right:10px; }
+    .hidden { display:none !important; }
+    .quiz-head { padding:25px clamp(22px, 4vw, 38px) 20px; border-bottom:1px solid var(--line); }
+    .quiz-meta { display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:13px; color:var(--muted); margin-bottom:13px; }
+    .progress-track { height:7px; background:#edf0f6; border-radius:99px; overflow:hidden; }
+    .progress-fill { height:100%; width:0; background:linear-gradient(90deg,#4169d8,#8a75d6); border-radius:99px; transition:width .25s; }
+    .question-area { padding:clamp(24px, 5vw, 42px); }
+    .question-kicker { color:var(--primary); font-size:12px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }
+    h2 { margin:10px 0 10px; font-size:clamp(23px, 3.7vw, 31px); line-height:1.25; letter-spacing:-.025em; }
+    .question-help { color:var(--muted); margin:0 0 25px; font-size:14px; line-height:1.6; }
+    .answers { display:grid; gap:11px; }
+    .answer {
+      display:flex; align-items:flex-start; gap:13px; width:100%; padding:16px;
+      border:1.5px solid var(--line); border-radius:16px; background:#fff; text-align:left; color:var(--ink);
+      transition:border .15s, background .15s, transform .15s;
+    }
+    .answer:hover { border-color:#b7c6f5; transform:translateY(-1px); }
+    .answer.selected { border-color:var(--primary); background:#f2f5ff; box-shadow:0 0 0 2px rgba(65,105,216,.07); }
+    .letter {
+      display:grid; place-items:center; flex:0 0 31px; height:31px; border-radius:10px;
+      background:#f1f3f8; color:#58647b; font-size:13px; font-weight:800;
+    }
+    .answer.selected .letter { background:var(--primary); color:white; }
+    .answer-text { font-size:14px; line-height:1.6; padding-top:4px; }
+    .quiz-foot { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:18px clamp(22px, 4vw, 38px) 25px; border-top:1px solid var(--line); }
+    .foot-right { display:flex; gap:9px; }
+    .error { color:#b33a47; font-size:13px; min-height:18px; margin-top:10px; }
+    .result-top { padding:clamp(26px,5vw,45px); background:linear-gradient(135deg,#f1f5ff,#fbf9ff); border-bottom:1px solid var(--line); }
+    .result-top h1 { font-size:clamp(29px,4.5vw,40px); margin:15px 0 10px; }
+    .result-top p { color:var(--muted); line-height:1.7; margin:0; }
+    .result-body { padding:clamp(22px,5vw,40px); }
+    .result-section-title { font-size:18px; letter-spacing:-.02em; margin:0 0 6px; }
+    .section-desc { font-size:13px; color:var(--muted); line-height:1.6; margin:0 0 22px; }
+    .rank-list { display:grid; gap:16px; }
+    .rank-item { border:1px solid var(--line); border-radius:17px; padding:17px; }
+    .rank-item.top { border-color:#b9c8fb; background:#fbfcff; }
+    .rank-line { display:flex; align-items:center; gap:12px; }
+    .rank-number { width:30px; height:30px; display:grid; place-items:center; border-radius:10px; background:#f0f2f7; font-size:13px; font-weight:800; flex:0 0 30px; }
+    .rank-item.top .rank-number { background:#e4ebff; color:#3459c5; }
+    .rank-name { font-weight:800; flex:1; }
+    .rank-pct { font-size:21px; font-weight:850; letter-spacing:-.03em; }
+    .rank-track { height:8px; background:#edf0f6; border-radius:99px; overflow:hidden; margin:14px 0 10px 42px; }
+    .rank-fill { height:100%; border-radius:99px; transition:width .4s; }
+    .rank-desc { font-size:13px; line-height:1.6; color:var(--muted); margin-left:42px; }
+    .recommendation { background:#f8faff; border:1px solid #e1e8ff; border-radius:18px; padding:19px; margin-top:25px; }
+    .recommendation h3 { margin:0 0 8px; font-size:16px; }
+    .recommendation p { color:var(--muted); line-height:1.7; margin:0; font-size:14px; }
+    .result-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:25px; }
+    .disclaimer { color:#7a8498; font-size:12px; line-height:1.65; margin-top:22px; }
+    .footer { text-align:center; font-size:12px; color:#8790a3; padding:22px 8px 0; }
+    @media (max-width:600px) {
+      .shell { width:min(100% - 20px, 880px); padding-top:20px; }
+      .brand { margin-bottom:18px; }
+      .panel { border-radius:21px; }
+      .feature-grid { grid-template-columns:1fr; }
+      .feature { display:flex; gap:12px; align-items:center; padding:12px; }
+      .feature-icon { margin:0; }
+      .quiz-foot { align-items:stretch; flex-direction:column-reverse; }
+      .foot-right { display:grid; grid-template-columns:1fr 1fr; }
+      .foot-right .btn { padding:12px 10px; }
+      .rank-pct { font-size:19px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="brand">
+      <div class="brand-mark">✦</div>
+      <div>
+        <div class="brand-name">La Bàn Nhóm Môn</div>
+        <div class="brand-sub">Khám phá sở thích · Tìm hướng đi</div>
+      </div>
+    </header>
+
+    <section id="intro" class="panel intro">
+      <span class="eyebrow">✦ Bài trắc nghiệm định hướng</span>
+      <h1>Khám phá nhóm môn<br>phù hợp với bạn</h1>
+      <p class="lead">Trả lời 12 câu hỏi ngắn về sở thích, cách học và điều bạn quan tâm. Kết quả sẽ giúp bạn nhìn rõ hơn những nhóm định hướng đáng để tìm hiểu.</p>
+      <div class="feature-grid">
+        <div class="feature"><div class="feature-icon">🧭</div><div><strong>12 câu hỏi</strong><span>Chọn phương án gần với bạn nhất.</span></div></div>
+        <div class="feature"><div class="feature-icon">📊</div><div><strong>4 nhóm định hướng</strong><span>Xem tỉ lệ và thứ hạng từng nhóm.</span></div></div>
+        <div class="feature"><div class="feature-icon">🔎</div><div><strong>Gợi ý để suy ngẫm</strong><span>Dùng kết quả như một điểm khởi đầu.</span></div></div>
+      </div>
+      <div class="note">Lưu ý: Đây là bản mẫu để thử cách hoạt động của website. Tên nhóm và câu hỏi hiện là nội dung minh họa; kết quả không thay thế việc tìm hiểu chương trình học, năng lực và tổ hợp môn thực tế của trường.</div>
+      <div style="margin-top:25px"><button id="startBtn" class="btn btn-primary">Bắt đầu trắc nghiệm <span aria-hidden="true">→</span></button></div>
+    </section>
+
+    <section id="quiz" class="panel hidden" aria-live="polite">
+      <div class="quiz-head">
+        <div class="quiz-meta"><span id="questionCounter">Câu 1/12</span><span id="progressPercent">8% hoàn thành</span></div>
+        <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+      </div>
+      <div class="question-area">
+        <div id="questionKicker" class="question-kicker">Câu hỏi 01</div>
+        <h2 id="questionText"></h2>
+        <p class="question-help">Không có đáp án đúng hay sai. Hãy chọn phương án giống với bạn nhất.</p>
+        <div id="answers" class="answers"></div>
+        <div id="error" class="error" role="status"></div>
+      </div>
+      <div class="quiz-foot">
+        <button id="backBtn" class="btn btn-quiet">← Quay lại</button>
+        <div class="foot-right">
+          <button id="nextBtn" class="btn btn-primary">Câu tiếp theo →</button>
+          <button id="finishBtn" class="btn btn-primary hidden">Xem kết quả ✦</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="results" class="panel hidden">
+      <div class="result-top">
+        <span class="eyebrow">✦ Hoàn thành trắc nghiệm</span>
+        <h1 id="resultHeading">Kết quả định hướng của bạn</h1>
+        <p id="resultSummary"></p>
+      </div>
+      <div class="result-body">
+        <h2 class="result-section-title">Mức độ lựa chọn ở 4 nhóm</h2>
+        <p class="section-desc">Tỉ lệ được tính từ số đáp án bạn chọn trong 12 câu hỏi và được xếp theo thứ tự từ cao xuống thấp.</p>
+        <div id="rankList" class="rank-list"></div>
+        <div class="recommendation">
+          <h3 id="recommendationTitle">Bạn có thể bắt đầu từ đâu?</h3>
+          <p id="recommendationText"></p>
+        </div>
+        <p class="disclaimer">Cách đọc kết quả: phần trăm cho biết tỉ lệ câu trả lời được tính cho mỗi nhóm trong bài trắc nghiệm này, không phải xác suất khoa học rằng bạn chắc chắn phù hợp với nhóm đó. Hãy kết hợp với điểm mạnh, sở thích, điều kiện học tập và các môn trường đang tổ chức.</p>
+        <div class="result-actions">
+          <button id="restartBtn" class="btn btn-primary">↻ Làm lại bài trắc nghiệm</button>
+          <button id="printBtn" class="btn btn-secondary">In / lưu kết quả</button>
+        </div>
+      </div>
+    </section>
+    <footer class="footer">La Bàn Nhóm Môn · Bản mẫu định hướng học tập</footer>
+  </main>
+
+  <script>
+    // Mỗi đáp án có một thuộc tính group: a, b, c hoặc d.
+    // Có thể thay nội dung câu hỏi/đáp án tại đây mà không cần sửa phần giao diện.
+    const groups = {
+      a: {
+        name: "KQ1 · Toán – Hóa học – Sinh học",
+        color: "var(--a)",
+        description: "Nhóm định hướng khoa học tự nhiên, sự sống và sức khỏe; phù hợp để tìm hiểu các môn Toán, Hóa học và Sinh học.",
+        suggestion: "Tìm hiểu thêm các môn Toán, Hóa học, Sinh học, đồng thời đối chiếu với năng lực học tập và ngành nghề bạn quan tâm."
+      },
+      b: {
+        name: "KQ2 · Toán – Vật lý – Địa lý",
+        color: "var(--b)",
+        description: "Nhóm định hướng tư duy định lượng, quy luật vật lý và không gian địa lý; phù hợp để khám phá các vấn đề kỹ thuật, tự nhiên và không gian.",
+        suggestion: "Tìm hiểu thêm các môn Toán, Vật lý, Địa lý và cách chúng liên hệ với những lĩnh vực bạn muốn theo đuổi."
+      },
+      c: {
+        name: "KQ3 · Vật lý – KTPL – Địa lý",
+        color: "var(--c)",
+        description: "Nhóm định hướng kết hợp hiểu biết về tự nhiên, kinh tế – pháp luật và địa lý xã hội; phù hợp để khám phá các vấn đề thực tiễn của cộng đồng.",
+        suggestion: "Tìm hiểu thêm các môn Vật lý, Giáo dục kinh tế và pháp luật (KTPL), Địa lý; kiểm tra tổ hợp và yêu cầu tuyển sinh thực tế."
+      },
+      d: {
+        name: "KQ4 · Ngữ văn – Lịch sử – Địa lý",
+        color: "var(--d)",
+        description: "Nhóm định hướng ngôn ngữ, lịch sử, văn hóa và xã hội; phù hợp để khám phá cách con người diễn đạt, lưu giữ và lý giải các trải nghiệm xã hội.",
+        suggestion: "Tìm hiểu thêm các môn Ngữ văn, Lịch sử, Địa lý và những ngành học liên quan đến xã hội, văn hóa, ngôn ngữ."
+      }
+    };
+
+    // 12 câu hỏi do người dùng cung cấp, gán điểm KQ1-KQ4.
+    const questions = [
+      {
+        title: "Hoạt động ngoại khóa cuối tuần",
+        text: "Cuối tuần, nhóm bạn đề xuất cùng tham gia một hoạt động trải nghiệm thực tế. Bạn sẽ ưu tiên chọn hoạt động nào nhất?",
+        answers: [
+          { text: "Tham gia câu lạc bộ thí nghiệm khoa học và trồng cây dược liệu tại vườn trường.", group: "a" },
+          { text: "Tham gia thiết kế hệ thống tưới nước tự động bằng cảm biến cho vườn rau.", group: "b" },
+          { text: "Tham gia hội chợ khởi nghiệp trẻ và khảo sát xu hướng tiêu dùng của cư dân địa phương.", group: "c" },
+          { text: "Tham gia câu lạc bộ đọc sách, sáng tác văn học và tham quan bảo tàng lịch sử.", group: "d" }
+        ]
+      },
+      {
+        title: "Chủ đề theo dõi trên tin tức",
+        text: "Khi xem một bản tin thời sự hoặc chương trình tài liệu, nội dung nào thường giữ sự chú ý của bạn lâu nhất?",
+        answers: [
+          { text: "Sự phát triển của công nghệ sinh học và y học trong việc chữa bệnh.", group: "a" },
+          { text: "Các dự án quy hoạch hạ tầng giao thông và ứng dụng công nghệ hiện đại.", group: "b" },
+          { text: "Biến động thị trường tài chính và các chính sách phát triển kinh tế vĩ mô.", group: "c" },
+          { text: "Di sản văn hóa, sự kiện lịch sử và các vấn đề xã hội, nghệ thuật.", group: "d" }
+        ]
+      },
+      {
+        title: "Chọn đề tài dự án nghiên cứu",
+        text: "Bạn được phân công làm trưởng nhóm trong một dự án nghiên cứu nhỏ ở trường. Bạn sẽ chọn chủ đề nào để cùng nhóm thực hiện?",
+        answers: [
+          { text: "Nghiên cứu tác động của ô nhiễm môi trường đến hệ sinh thái và sức khỏe con người.", group: "a" },
+          { text: "Phân tích và tối ưu hóa tuyến đường giao thông thông minh trong thành phố.", group: "b" },
+          { text: "Đánh giá tác động của thương mại điện tử đối với thói quen tiêu dùng của giới trẻ.", group: "c" },
+          { text: "Tìm hiểu sự biến đổi của ca dao, dân ca trong đời sống đô thị hiện đại.", group: "d" }
+        ]
+      },
+      {
+        title: "Tủ sách yêu thích",
+        text: "Trong tủ sách cá nhân hoặc danh sách bài viết bạn hay đọc trực tuyến, loại nội dung nào chiếm ưu thế?",
+        answers: [
+          { text: "Sách về y học, sinh vật học, dinh dưỡng và các phát minh khoa học đời sống.", group: "a" },
+          { text: "Sách về kỹ thuật, khám phá vũ trụ, bản đồ và địa lý tự nhiên.", group: "b" },
+          { text: "Sách về kinh tế học hành vi, quản trị kinh doanh và văn bản pháp luật.", group: "c" },
+          { text: "Sách văn học, tiểu thuyết lịch sử, triết học và văn hóa các dân tộc.", group: "d" }
+        ]
+      },
+      {
+        title: "Cuộc thi sáng tạo giải pháp",
+        text: "Nếu được tham gia một cuộc thi giải quyết các vấn đề thực tế, bạn sẽ tập trung vào ý tưởng nào?",
+        answers: [
+          { text: "Tìm kiếm giải pháp bảo quản thực phẩm hữu cơ an toàn cho sức khỏe cộng đồng.", group: "a" },
+          { text: "Ứng dụng năng lượng tái tạo và mô hình dự báo thời tiết cho vùng nông nghiệp.", group: "b" },
+          { text: "Xây dựng mô hình kinh doanh nhỏ tuân thủ pháp luật và tối ưu chi phí vận hành.", group: "c" },
+          { text: "Sáng tác tác phẩm truyền thông nhằm bảo tồn nét đẹp văn hóa truyền thống.", group: "d" }
+        ]
+      },
+      {
+        title: "Phong cách tư duy khi gặp thử thách",
+        text: "Khi đối mặt với một bài toán hoặc một thử thách phức tạp trong học tập, cách bạn tiếp cận tự nhiên nhất là gì?",
+        answers: [
+          { text: "Phân tích chi tiết cấu trúc bên trong, thành phần hóa học và tác động sinh học.", group: "a" },
+          { text: "Dùng logic toán học, quy luật vật lý và quan sát không gian để giải quyết.", group: "b" },
+          { text: "Đánh giá tính hiệu quả, chi phí – lợi ích và các quy định pháp luật liên quan.", group: "c" },
+          { text: "Dùng tư duy cảm thụ, liên tưởng xã hội và diễn đạt thông qua ngôn từ sâu sắc.", group: "d" }
+        ]
+      },
+      {
+        title: "Trải nghiệm trong chuyến dã ngoại",
+        text: "Trong một chuyến dã ngoại thực tế tại vùng núi cao, điều gì thu hút sự tò mò của bạn nhất?",
+        answers: [
+          { text: "Hệ sinh thái thực vật phong phú, các loài côn trùng và nguồn nước sinh hoạt.", group: "a" },
+          { text: "Cấu trúc địa chất, khí hậu đặc trưng và nguyên lý vận hành của thủy điện gần đó.", group: "b" },
+          { text: "Hoạt động thương mại buôn bán của người dân địa phương và chính sách phát triển du lịch.", group: "c" },
+          { text: "Phong tục truyền thống lâu đời và các di tích lịch sử gắn liền với vùng đất đó.", group: "d" }
+        ]
+      },
+      {
+        title: "Khóa học kỹ năng ngắn hạn",
+        text: "Nếu được chọn một khóa học bổ trợ ngắn hạn để nâng cao năng lực bản thân, bạn sẽ chọn khóa học nào?",
+        answers: [
+          { text: "Kỹ năng sơ cứu y tế và chăm sóc sức khỏe chủ động.", group: "a" },
+          { text: "Kỹ năng phân tích dữ liệu không gian và ứng dụng bản đồ số.", group: "b" },
+          { text: "Kỹ năng quản lý tài chính cá nhân và hiểu biết về pháp luật hợp đồng.", group: "c" },
+          { text: "Kỹ năng viết sáng tạo, diễn thuyết và tranh biện xã hội.", group: "d" }
+        ]
+      },
+      {
+        title: "Vai trò khi làm việc nhóm",
+        text: "Khi tham gia một bài tập nhóm lớn, thế mạnh tự nhiên mà bạn thường thể hiện là gì?",
+        answers: [
+          { text: "Tổng hợp dữ liệu thí nghiệm, phân tích số liệu sinh hóa và kiểm tra kết quả thực nghiệm.", group: "a" },
+          { text: "Xây dựng mô hình biểu đồ, tính toán kỹ thuật và phân tích số liệu không gian địa lý.", group: "b" },
+          { text: "Lập kế hoạch phân bổ nguồn lực, quản lý ngân sách và kiểm tra tính pháp lý của nhóm.", group: "c" },
+          { text: "Viết nội dung thuyết trình, biên tập văn bản và xây dựng câu chuyện truyền cảm hứng.", group: "d" }
+        ]
+      },
+      {
+        title: "Đề tài tranh luận ưa thích",
+        text: "Nếu tham gia một buổi tranh luận (debate) ở trường, chủ đề nào khiến bạn hứng thú nhất?",
+        answers: [
+          { text: "Có nên áp dụng rộng rãi công nghệ chỉnh sửa gen trên cơ thể người hay không?", group: "a" },
+          { text: "Phát triển hạ tầng đô thị ứng phó với biến đổi khí hậu nên ưu tiên giải pháp nào?", group: "b" },
+          { text: "Chính phủ có nên đánh thuế cao đối với các hoạt động gây ô nhiễm môi trường hay không?", group: "c" },
+          { text: "Vai trò của việc bảo tồn ngôn ngữ và di sản văn hóa trong thời đại toàn cầu hóa.", group: "d" }
+        ]
+      },
+      {
+        title: "Môi trường làm việc ước mơ",
+        text: "Khi hình dung về không gian làm việc lý tưởng trong tương lai, bạn cảm thấy thoải mái nhất khi ở đâu?",
+        answers: [
+          { text: "Phòng thí nghiệm hiện đại, bệnh viện tiên tiến hoặc khu nghiên cứu sinh thái.", group: "a" },
+          { text: "Viện nghiên cứu kỹ thuật, trung tâm dự báo khí tượng hoặc công trình hạ tầng.", group: "b" },
+          { text: "Doanh nghiệp lớn, ngân hàng, cơ quan hoạch định chính sách hoặc tổ chức pháp luật.", group: "c" },
+          { text: "Tòa soạn báo, cơ quan xuất bản, viện nghiên cứu văn hóa hoặc trung tâm truyền thông.", group: "d" }
+        ]
+      },
+      {
+        title: "Định hướng mục tiêu cá nhân",
+        text: "Mục tiêu lớn nhất bạn mong muốn đạt được sau khi kết thúc chương trình học phổ thông là gì?",
+        answers: [
+          { text: "Nắm vững nền tảng khoa học tự nhiên để khám phá bí ẩn sự sống và chăm sóc sức khỏe.", group: "a" },
+          { text: "Thạo tư duy tính toán, nắm rõ quy luật vật lý và ứng dụng vào thực địa/không gian.", group: "b" },
+          { text: "Hiểu rõ cách nền kinh tế vận hành và hệ thống pháp luật xã hội để trở thành công dân năng động.", group: "c" },
+          { text: "Phát triển vốn sống sâu sắc, khả năng tư duy xã hội và kỹ năng diễn đạt ngôn ngữ vượt trội.", group: "d" }
+        ]
+      }
+    ];
+
+    const letters = ["A", "B", "C", "D"];
+    let currentQuestion = 0;
+    let answersChosen = Array(questions.length).fill(null);
+
+    const intro = document.getElementById("intro");
+    const quiz = document.getElementById("quiz");
+    const results = document.getElementById("results");
+    const questionCounter = document.getElementById("questionCounter");
+    const progressPercent = document.getElementById("progressPercent");
+    const progressFill = document.getElementById("progressFill");
+    const questionKicker = document.getElementById("questionKicker");
+    const questionText = document.getElementById("questionText");
+    const answersContainer = document.getElementById("answers");
+    const error = document.getElementById("error");
+    const backBtn = document.getElementById("backBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const finishBtn = document.getElementById("finishBtn");
+
+    document.getElementById("startBtn").addEventListener("click", () => {
+      intro.classList.add("hidden");
+      results.classList.add("hidden");
+      quiz.classList.remove("hidden");
+      currentQuestion = 0;
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    function renderQuestion() {
+      const q = questions[currentQuestion];
+      const number = currentQuestion + 1;
+      const pct = Math.round((number / questions.length) * 100);
+
+      questionCounter.textContent = `Câu ${number}/${questions.length}`;
+      progressPercent.textContent = `${pct}% hoàn thành`;
+      progressFill.style.width = `${pct}%`;
+      questionKicker.textContent = `CÂU ${String(number).padStart(2, "0")} · ${q.title || "TRẮC NGHIỆM"}`;
+      questionText.textContent = q.text;
+      error.textContent = "";
+      answersContainer.innerHTML = "";
+
+      q.answers.forEach((answer, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "answer" + (answersChosen[currentQuestion] === index ? " selected" : "");
+        button.setAttribute("aria-pressed", answersChosen[currentQuestion] === index ? "true" : "false");
+
+        const letter = document.createElement("span");
+        letter.className = "letter";
+        letter.textContent = letters[index];
+
+        const text = document.createElement("span");
+        text.className = "answer-text";
+        text.textContent = answer.text;
+
+        button.append(letter, text);
+        button.addEventListener("click", () => {
+          answersChosen[currentQuestion] = index;
+          [...answersContainer.children].forEach((el, i) => {
+            const selected = i === index;
+            el.classList.toggle("selected", selected);
+            el.setAttribute("aria-pressed", selected ? "true" : "false");
+          });
+          error.textContent = "";
+        });
+        answersContainer.appendChild(button);
+      });
+
+      backBtn.disabled = currentQuestion === 0;
+      backBtn.style.opacity = currentQuestion === 0 ? ".45" : "1";
+      nextBtn.classList.toggle("hidden", currentQuestion === questions.length - 1);
+      finishBtn.classList.toggle("hidden", currentQuestion !== questions.length - 1);
+    }
+
+    function validateAndAdvance() {
+      if (answersChosen[currentQuestion] === null) {
+        error.textContent = "Bạn hãy chọn một đáp án trước khi tiếp tục nhé.";
+        return;
+      }
+      currentQuestion++;
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    nextBtn.addEventListener("click", validateAndAdvance);
+    backBtn.addEventListener("click", () => {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+      }
+    });
+
+    finishBtn.addEventListener("click", () => {
+      if (answersChosen[currentQuestion] === null) {
+        error.textContent = "Bạn hãy chọn một đáp án trước khi xem kết quả nhé.";
+        return;
+      }
+      showResults();
+    });
+
+    function showResults() {
+      const scores = { a: 0, b: 0, c: 0, d: 0 };
+      answersChosen.forEach((answerIndex, questionIndex) => {
+        const group = questions[questionIndex].answers[answerIndex].group;
+        scores[group] += 1;
+      });
+
+      const ranked = Object.keys(groups)
+        .map(key => ({
+          key,
+          ...groups[key],
+          score: scores[key],
+          pct: (scores[key] / questions.length) * 100
+        }))
+        .sort((x, y) => y.score - x.score || x.key.localeCompare(y.key));
+
+      const topScore = ranked[0].score;
+      const topGroups = ranked.filter(item => item.score === topScore);
+      const heading = document.getElementById("resultHeading");
+      const summary = document.getElementById("resultSummary");
+      const rankList = document.getElementById("rankList");
+
+      if (topGroups.length === 1) {
+        heading.textContent = `${topGroups[0].name} là nhóm nổi bật nhất`;
+        summary.textContent = `Bạn có ${topGroups[0].score}/${questions.length} lựa chọn thuộc ${topGroups[0].name}. Đây là hướng bạn có thể ưu tiên tìm hiểu trước.`;
+      } else {
+        heading.textContent = `${topGroups.length} nhóm đang đồng hạng cao nhất`;
+        summary.textContent = `Bạn có số lựa chọn bằng nhau ở ${topGroups.map(g => g.name).join(", ")}. Hãy xem mô tả của các nhóm này và cân nhắc thêm sở thích, năng lực của mình.`;
+      }
+
+      rankList.innerHTML = "";
+      ranked.forEach((item, index) => {
+        const card = document.createElement("div");
+        card.className = "rank-item" + (item.score === topScore ? " top" : "");
+
+        const line = document.createElement("div");
+        line.className = "rank-line";
+
+        const rank = document.createElement("span");
+        rank.className = "rank-number";
+        rank.textContent = item.score === topScore && topGroups.length > 1 ? "=" : String(index + 1);
+
+        const name = document.createElement("span");
+        name.className = "rank-name";
+        name.textContent = item.name + (item.score === topScore ? " · " + (topGroups.length > 1 ? "Đồng hạng" : "Nổi bật nhất") : "");
+
+        const pct = document.createElement("span");
+        pct.className = "rank-pct";
+        pct.style.color = item.color;
+        pct.textContent = `${item.pct.toLocaleString("vi-VN", { maximumFractionDigits: 1 })}%`;
+
+        line.append(rank, name, pct);
+
+        const track = document.createElement("div");
+        track.className = "rank-track";
+        const fill = document.createElement("div");
+        fill.className = "rank-fill";
+        fill.style.background = item.color;
+        fill.style.width = `${item.pct}%`;
+        track.appendChild(fill);
+
+        const desc = document.createElement("div");
+        desc.className = "rank-desc";
+        desc.textContent = `${item.score}/${questions.length} lựa chọn. ${item.description}`;
+
+        card.append(line, track, desc);
+        rankList.appendChild(card);
+      });
+
+      document.getElementById("recommendationTitle").textContent =
+        topGroups.length === 1 ? `Gợi ý cho ${topGroups[0].name}` : "Gợi ý cho các nhóm đồng hạng";
+      document.getElementById("recommendationText").textContent =
+        topGroups.map(g => `${g.name}: ${g.suggestion}`).join(" ") +
+        " Hãy đối chiếu gợi ý này với các môn học thực tế, kết quả học tập và thông tin tuyển sinh trước khi quyết định.";
+
+      quiz.classList.add("hidden");
+      intro.classList.add("hidden");
+      results.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.getElementById("restartBtn").addEventListener("click", () => {
+      answersChosen = Array(questions.length).fill(null);
+      currentQuestion = 0;
+      results.classList.add("hidden");
+      intro.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    document.getElementById("printBtn").addEventListener("click", () => window.print());
+  </script>
+</body>
+</html>
