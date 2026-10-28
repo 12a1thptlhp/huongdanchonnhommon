@@ -139,11 +139,12 @@ function avg(vals){const v=vals.filter(x=>x!==null&&x!==undefined);return v.leng
 function resultReason(r){if(r.s>=70&&r.h>=75)return 'Xu hướng sở thích nổi bật và điểm học tập tham khảo tương đối thuận lợi; bạn có thể tìm hiểu sâu hơn về tổ hợp này.';if(r.s>=70&&r.h<75)return 'Sở thích có vẻ nổi bật hơn kết quả học tập hiện tại. Nếu quan tâm, hãy tìm hiểu yêu cầu môn học và cách cải thiện kiến thức nền.';if(r.s<70&&r.h>=80)return 'Điểm học tập tham khảo khá tốt, nhưng mức hứng thú trong bài test chưa nổi bật bằng các lựa chọn khác. Hãy cân nhắc xem bạn có thực sự thích học các môn này không.';return 'Đây là một hướng để tìm hiểu thêm; nên đối chiếu với sở thích thực tế, nội dung môn học và tổ hợp trường đang tuyển.';}
 function restart(){answers.fill(null);current=0;['math','literature','english','historyGeo','science','civic'].forEach(id=>$(id).value='');goHome();}
 const audio=$('audio');
-// Đặt các file nhạc của bạn trong thư mục music/ ở cùng cấp với index.html.
-// Đổi tên/path bên dưới cho khớp chính xác với file đã upload lên GitHub.
 tracks=[
- {name:'Bài nhạc 1',src:'YTSave.to_YouTube_Media_hCyA4BIgEUo_List-nhạc-thanh-xuân-Cảm-ơn-người-đã-thức-cùng-tôi_009_vbr.mp3'},
- {name:'Bài nhạc 2',src:'YTSave.to_YouTube_Media_pcHWIjti5tE_Lynk-Nguyen-Biet-Em-Since-I-Know-You-M-V_011_vbr.mp3'}
+ {name:'Bài nhạc 1',src:'YTSave.to_YouTube_Media_J3IRYx3PzzM_Cảm-Ơn-Người-Đã-Thức-Cùng-Tôi-Phùng-Khánh-Linh-Official-Lyrics-Video-Themesong_009_vbr.mp3'},
+ {name:'Bài nhạc 2',src:'YTSave.to_YouTube_Media_pcHWIjti5tE_Lynk-Nguyen-Biet-Em-Since-I-Know-You-M-V_011_vbr.mp3'},
+ {name:'Bài nhạc 3',src:'YTSave.to_YouTube_Media_Z1D26z9l8y8_Bầu-Trời-Mới-Da-LAB-ft-Minh-Tốc-Lam-Official-MV_011_vbr.mp3'},
+ {name:'Bài nhạc 4',src:'YTSave.to_YouTube_Media_R3trO4a49go_Thức-Giấc-Da-LAB-Official-sic-Video_011_vbr.mp3'},
+ {name:'Bài nhạc 5',src:'YTSave.to_YouTube_Media_pcHWIjti5tE_Lynk-Nguyen-Biet-Em-Since-I-Know-You-M-V_011_vbr.mp3'}
 ];
 function loadTrack(){if(!tracks.length)return;audio.src=tracks[trackIndex].src;$('trackName').textContent=tracks[trackIndex].name;audio.volume=Number($('volume').value);}
 function playPause(){if(audio.paused){if(!audio.src)loadTrack();audio.play().then(()=>$('playBtn').textContent='Ⅱ').catch(()=>{$('trackName').textContent='Không phát được nhạc — kiểm tra tên file trong thư mục music/';});}else{audio.pause();$('playBtn').textContent='▶';}}
