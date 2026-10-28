@@ -135,7 +135,7 @@ function calculateResults(){
   {keys:['toán','toan'],domains:['B']},
   {keys:['vật lý','vat ly','vật lí','vat li','physics'],domains:['B']},
   {keys:['tin học','tin hoc','công nghệ','cong nghe','technology'],domains:['B']},
-  {keys:['kinh tế','kinh te','ktpl','giáo dục kinh tế','giao duc kinh te','gdcd','công dân','cong dan'],domains:['C']},
+  {keys:['kinh tế','kinh te','gdkt&pl','giáo dục kinh tế','giao duc kinh te','gdcd','công dân','cong dan'],domains:['C']},
   {keys:['địa lý','dia ly','địa lí','dia li'],domains:['C','D']},
   {keys:['ngữ văn','ngu van','văn học','van hoc','literature'],domains:['D']},
   {keys:['lịch sử','lich su','history'],domains:['D']},
@@ -161,7 +161,7 @@ function calculateResults(){
   if(t.includes('tin hoc')||t.includes('informatics'))return grades.informatics;
   if(t.includes('lich su')||t.includes('dia li')||t.includes('dia ly')||t.includes('lich su va dia ly'))return grades.historyGeo;
   if(t.includes('hoa')||t.includes('sinh')||t.includes('vat li')||t.includes('vat ly')||t.includes('cong nghe'))return grades.science;
-  if(t.includes('ktpl')||t.includes('giao duc kinh te')||t.includes('gdcd')||t.includes('cong dan'))return grades.civic;
+  if(t.includes('gdkt&pl')||t.includes('giao duc kinh te')||t.includes('gdcd')||t.includes('cong dan'))return grades.civic;
   return null;
  }
  function scoreCombo(line){
@@ -199,10 +199,10 @@ const audio=$('audio');
 // Đặt các file nhạc của bạn trong thư mục music/ ở cùng cấp với index.html.
 // Đổi tên/path bên dưới cho khớp chính xác với file đã upload lên GitHub.
 tracks=[
- {name:'Bài nhạc 1',src:'YTSave.to_YouTube_Media_J3IRYx3PzzM_Cảm-Ơn-Người-Đã-Thức-Cùng-Tôi-Phùng-Khánh-Linh-Official-Lyrics-Video-Themesong_009_vbr.mp3'},
- {name:'Bài nhạc 2',src:'YTSave.to_YouTube_Media_R3trO4a49go_Thức-Giấc-Da-LAB-Official-Music-Video_011_vbr.mp3'},
- {name:'Bài nhạc 3',src:'YTSave.to_YouTube_Media_T0sHaz4H9MQ_Vùng-Ký-Ức-Chillies-Official-Music-Video_011_vbr.mp3'},
- {name:'Bài nhạc 4',src:'YTSave.to_YouTube_Media_Z1D26z9l8y8_Bầu-Trời-Mới-Da-LAB-ft-Minh-Tốc-Lam-Official-MV_011_vbr.mp3'}
+ {name:'Cảm ơn người đã thức cùng tôi - Phùng Khánh Linh',src:'YTSave.to_YouTube_Media_J3IRYx3PzzM_Cảm-Ơn-Người-Đã-Thức-Cùng-Tôi-Phùng-Khánh-Linh-Official-Lyrics-Video-Themesong_009_vbr.mp3'},
+ {name:'Thức giấc - Da LAB',src:'YTSave.to_YouTube_Media_R3trO4a49go_Thức-Giấc-Da-LAB-Official-Music-Video_011_vbr.mp3'},
+ {name:'Vùng ký ức - Chillies',src:'YTSave.to_YouTube_Media_T0sHaz4H9MQ_Vùng-Ký-Ức-Chillies-Official-Music-Video_011_vbr.mp3'},
+ {name:'Bầu trời mới - Da LAB',src:'YTSave.to_YouTube_Media_Z1D26z9l8y8_Bầu-Trời-Mới-Da-LAB-ft-Minh-Tốc-Lam-Official-MV_011_vbr.mp3'}
 ];
 function loadTrack(){if(!tracks.length)return;audio.src=tracks[trackIndex].src;$('trackName').textContent=tracks[trackIndex].name;audio.volume=Number($('volume').value);}
 function playPause(){if(audio.paused){if(!audio.src)loadTrack();audio.play().then(()=>$('playBtn').textContent='Ⅱ').catch(()=>{$('trackName').textContent='Không phát được nhạc — kiểm tra tên file trong thư mục music/';});}else{audio.pause();$('playBtn').textContent='▶';}}
