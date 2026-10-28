@@ -140,11 +140,11 @@ function resultReason(r){if(r.s>=70&&r.h>=75)return 'Xu hướng sở thích n�
 function restart(){answers.fill(null);current=0;['math','literature','english','historyGeo','science','civic'].forEach(id=>$(id).value='');goHome();}
 const audio=$('audio');
 tracks=[
- {name:'Bài nhạc 1',src:'./YTSave.to_YouTube_Media_J3IRYx3PzzM_Cảm-Ơn-Người-Đã-Thức-Cùng-Tôi-Phùng-Khánh-Linh-Official-Lyrics-Video-Themesong_009_vbr.mp3'},
- {name:'Bài nhạc 2',src:'./YTSave.to_YouTube_Media_pcHWIjti5tE_Lynk-Nguyen-Biet-Em-Since-I-Know-You-M-V_011_vbr.mp3'},
- {name:'Bài nhạc 3',src:'./YTSave.to_YouTube_Media_Z1D26z9l8y8_Bầu-Trời-Mới-Da-LAB-ft-Minh-Tốc-Lam-Official-MV_011_vbr.mp3'},
- {name:'Bài nhạc 4',src:'./YTSave.to_YouTube_Media_R3trO4a49go_Thức-Giấc-Da-LAB-Official-sic-Video_011_vbr.mp3'},
- {name:'Bài nhạc 5',src:'./YTSave.to_YouTube_Media_T0sHaz4H9MQ_Vùng-Ký-Ức-Chillies-Official-Music-Video_011_vbr.mp3'}
+ {name:'Bài nhạc 1',src:'/YTSave.to_YouTube_Media_J3IRYx3PzzM_Cảm-Ơn-Người-Đã-Thức-Cùng-Tôi- Phùng-Khánh-Linh-Official-Lyrics-Video-Themesong_009_vbr.mp3'},
+ {name:'Bài nhạc 2',src:'/YTSave.to_YouTube_Media_pcHWIjti5tE_Lynk-Nguyen-Biet-Em-Since-I-Know-You-M-V_011_vbr.mp3'},
+ {name:'Bài nhạc 3',src:'/YTSave.to_YouTube_Media_Z1D26z9l8y8_Bầu-Trời-Mới-Da-LAB-ft-Minh-Tốc-Lam-Official-MV_011_vbr.mp3'},
+ {name:'Bài nhạc 4',src:'/YTSave.to_YouTube_Media_R3trO4a49go_Thức-Giấc-Da-LAB-Official-sic-Video_011_vbr.mp3'},
+ {name:'Bài nhạc 5',src:'/YTSave.to_YouTube_Media_T0sHaz4H9MQ_Vùng-Ký-Ức-Chillies-Official-Music-Video_011_vbr.mp3'}
 ];
 function loadTrack(){if(!tracks.length)return;audio.src=tracks[trackIndex].src;$('trackName').textContent=tracks[trackIndex].name;audio.volume=Number($('volume').value);}
 function playPause(){if(audio.paused){if(!audio.src)loadTrack();audio.play().then(()=>$('playBtn').textContent='Ⅱ').catch(()=>{$('trackName').textContent='Không phát được nhạc — kiểm tra tên file trong thư mục music/';});}else{audio.pause();$('playBtn').textContent='▶';}}
