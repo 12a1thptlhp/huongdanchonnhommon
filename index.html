@@ -143,7 +143,7 @@ const audio=$('audio');
 // Đổi tên/path bên dưới cho khớp chính xác với file đã upload lên GitHub.
 tracks=[
  {name:'Bài nhạc 1',src:'YTSave.to_YouTube_Media_hCyA4BIgEUo_List-nhạc-thanh-xuân-Cảm-ơn-người-đã-thức-cùng-tôi_009_vbr.mp3'},
- {name:'Bài nhạc 2',src:'music/song2.mp3'}
+ {name:'Bài nhạc 2',src:'YTSave.to_YouTube_Media_pcHWIjti5tE_Lynk-Nguyen-Biet-Em-Since-I-Know-You-M-V_011_vbr.mp3'}
 ];
 function loadTrack(){if(!tracks.length)return;audio.src=tracks[trackIndex].src;$('trackName').textContent=tracks[trackIndex].name;audio.volume=Number($('volume').value);}
 function playPause(){if(audio.paused){if(!audio.src)loadTrack();audio.play().then(()=>$('playBtn').textContent='Ⅱ').catch(()=>{$('trackName').textContent='Không phát được nhạc — kiểm tra tên file trong thư mục music/';});}else{audio.pause();$('playBtn').textContent='▶';}}
